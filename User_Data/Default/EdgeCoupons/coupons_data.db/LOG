@@ -1,0 +1,6 @@
+2026/01/16-14:26:38.087 5274 Reusing MANIFEST c:\Users\BZT0588\OneDrive\Tài liệu\automation-test\User_Data\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/01/16-14:26:38.091 5274 Recovering log #19
+2026/01/16-14:26:38.091 5274 Reusing old log c:\Users\BZT0588\OneDrive\Tài liệu\automation-test\User_Data\Default\EdgeCoupons/coupons_data.db/000019.log 
+2026/01/16-14:26:38.540 d9c Level-0 table #24: started
+2026/01/16-14:26:38.581 d9c Level-0 table #24: 681440 bytes OK
+2026/01/16-14:26:38.611 d9c Delete type=0 #19

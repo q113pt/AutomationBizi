@@ -1,0 +1,178 @@
+[11240:6292:0116/142633.676:WARNING:chrome\browser\extensions\activity_log\activity_log_policy.cc:71] Scheduling init
+[11240:6292:0116/142633.676:WARNING:chrome\browser\extensions\activity_log\activity_log_policy.cc:71] Scheduling init
+[11240:6292:0116/142633.862:WARNING:components\signin\internal\identity_manager\account_fetcher_service.cc:233] Edge does not support fetching account capabilities
+[11240:6292:0116/142633.862:WARNING:components\signin\internal\identity_manager\account_fetcher_service.cc:195] Should not execute: Tests depending on this function may fail
+[11240:6292:0116/142634.331:INFO:CONSOLE:2] "Error while attempting to measure start/end of 'AdServiceCall.SuperFeed'. Error: SyntaxError: Failed to execute 'measure' on 'Performance': The mark 'AdServiceCall.SuperFeed-start' does not exist. [object Object] Fri Jan 16 2026 14:26:34 GMT+0700 (Indochina Time)", source: https://assets.msn.com/bundles/v1/edgeChromium/latest/vendors.12c1f6e5ff43f6e8efda.js (2)
+[11240:6292:0116/142634.338:INFO:CONSOLE:2] "PSL: Preferences API does not have background_setting_preferences. [object Object] Fri Jan 16 2026 14:26:34 GMT+0700 (Indochina Time)", source: https://assets.msn.com/bundles/v1/edgeChromium/latest/vendors.12c1f6e5ff43f6e8efda.js (2)
+[16372:14928:0116/142634.585:WARNING:net\spdy\spdy_session.cc:3092] Received HEADERS for invalid stream 7
+[11240:6292:0116/142634.971:ERROR:chrome\browser\task_manager\providers\fallback_task_provider.cc:126] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
+[11240:6292:0116/142635.210:INFO:CONSOLE:293727] "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold", source: https://qa-tms.bizihub.vn/vendor.js (293727)
+[11240:6292:0116/142635.256:INFO:CONSOLE:35841] "The object notation for `createSlice.extraReducers` is deprecated, and will be removed in RTK 2.0. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createSlice", source: https://qa-tms.bizihub.vn/vendor.js (35841)
+[11240:6292:0116/142635.732:INFO:CONSOLE:263977] "Warning: Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?%s%s 
+
+Check the render method of `TextField`. 
+    at FormItem (https://qa-tms.bizihub.vn/main.js:392689:3)
+    at div
+    at LabelInput (https://qa-tms.bizihub.vn/main.js:392796:3)
+    at div
+    at TextField (https://qa-tms.bizihub.vn/main.js:392837:7)
+    at FormInput (https://qa-tms.bizihub.vn/main.js:398073:7)
+    at div
+    at div
+    at form
+    at FormProvider (https://qa-tms.bizihub.vn/vendor.js:49571:13)
+    at Form (https://qa-tms.bizihub.vn/main.js:392644:3)
+    at div
+    at LoginCtn (https://qa-tms.bizihub.vn/main.js:364811:45)
+    at LoginPage
+    at Suspense
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at Outlet (https://qa-tms.bizihub.vn/vendor.js:40365:26)
+    at div
+    at div
+    at div
+    at AuthLayout (https://qa-tms.bizihub.vn/main.js:8542:7)
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at RenderErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:39806:5)
+    at Outlet (https://qa-tms.bizihub.vn/vendor.js:40365:26)
+    at AppLogicProvider (https://qa-tms.bizihub.vn/main.js:314887:3)
+    at RootLayout (https://qa-tms.bizihub.vn/main.js:9621:21)
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at RenderErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:39806:5)
+    at DataRoutes (https://qa-tms.bizihub.vn/vendor.js:40277:5)
+    at Router (https://qa-tms.bizihub.vn/vendor.js:40388:15)
+    at RouterProvider (https://qa-tms.bizihub.vn/vendor.js:40224:5)
+    at div
+    at App (https://qa-tms.bizihub.vn/main.js:10315:36)
+    at PartnershipApiProvider (https://qa-tms.bizihub.vn/main.js:8459:3)
+    at MotionWrapper (https://qa-tms.bizihub.vn/vendor.js:37289:5)
+    at ProviderChildren (https://qa-tms.bizihub.vn/vendor.js:37405:5)
+    at ConfigProvider (https://qa-tms.bizihub.vn/vendor.js:37653:25)
+    at I18nextProvider (https://qa-tms.bizihub.vn/vendor.js:34282:5)
+    at TranslationProvider (https://qa-tms.bizihub.vn/main.js:315951:3)
+    at QueryClientProvider (https://qa-tms.bizihub.vn/vendor.js:91488:3)
+    at PersistGate (https://qa-tms.bizihub.vn/vendor.js:37752:5)
+    at Provider (https://qa-tms.bizihub.vn/vendor.js:39028:3)
+    at ErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:244334:5)
+    at AppErrorBoundary (https://qa-tms.bizihub.vn/main.js:392202:3)
+    at AppProviders (https://qa-tms.bizihub.vn/main.js:8351:33)", source: https://qa-tms.bizihub.vn/vendor.js (263977)
+[11240:6292:0116/142635.865:INFO:CONSOLE:0] "[DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://www.chromium.org/developers/design-documents/create-amazing-password-forms) %o", source: https://qa-tms.bizihub.vn/auth/login (0)
+[11240:6292:0116/142638.013:WARNING:chrome\browser\edge_underside\underside_helper.cc:1280] If test does not need FrontLoad, this may be expected. SetFrontLoadDecision: 3
+[11240:6292:0116/142638.013:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-16 07:26:33.932619 UTC, pending_favicon_request_start_time_=2026-01-16 07:26:35.707016 UTC
+[11240:6292:0116/142638.015:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-16 07:26:34.217667 UTC, pending_favicon_request_start_time_=2026-01-16 07:26:35.707016 UTC
+[11240:6292:0116/142638.015:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-16 07:26:34.500463 UTC, pending_favicon_request_start_time_=2026-01-16 07:26:35.707016 UTC
+[11240:6292:0116/142638.015:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-16 07:26:35.698020 UTC, pending_favicon_request_start_time_=2026-01-16 07:26:35.707016 UTC
+[11240:1280:0116/142638.205:WARNING:chrome\browser\media\router\discovery\discovery_network_list_win.cc:228] Failed to open WLAN handle: The service has not been started. (0x426)
+[8872:7704:0116/142638.218:INFO:components\services\edge_entity_extraction\extractor_impl.cc:990] ExtractorImpl::SetIsPendingEEConfig : 1
+[11240:6292:0116/142638.898:INFO:CONSOLE:263977] "Warning: React does not recognize the `%s` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `%s` instead. If you accidentally passed it from a parent component, remove it from the DOM element.%s rootClassName rootclassname 
+    at main
+    at https://qa-tms.bizihub.vn/vendor.js:90736:18
+    at Content
+    at div
+    at https://qa-tms.bizihub.vn/vendor.js:90756:13
+    at Layout
+    at div
+    at https://qa-tms.bizihub.vn/vendor.js:90756:13
+    at Layout
+    at DashboardLayout (https://qa-tms.bizihub.vn/main.js:9382:36)
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at RenderErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:39806:5)
+    at Outlet (https://qa-tms.bizihub.vn/vendor.js:40365:26)
+    at AppLogicProvider (https://qa-tms.bizihub.vn/main.js:314887:3)
+    at RootLayout (https://qa-tms.bizihub.vn/main.js:9621:21)
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at RenderErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:39806:5)
+    at DataRoutes (https://qa-tms.bizihub.vn/vendor.js:40277:5)
+    at Router (https://qa-tms.bizihub.vn/vendor.js:40388:15)
+    at RouterProvider (https://qa-tms.bizihub.vn/vendor.js:40224:5)
+    at div
+    at App (https://qa-tms.bizihub.vn/main.js:10315:36)
+    at PartnershipApiProvider (https://qa-tms.bizihub.vn/main.js:8459:3)
+    at MotionWrapper (https://qa-tms.bizihub.vn/vendor.js:37289:5)
+    at ProviderChildren (https://qa-tms.bizihub.vn/vendor.js:37405:5)
+    at ConfigProvider (https://qa-tms.bizihub.vn/vendor.js:37653:25)
+    at I18nextProvider (https://qa-tms.bizihub.vn/vendor.js:34282:5)
+    at TranslationProvider (https://qa-tms.bizihub.vn/main.js:315951:3)
+    at QueryClientProvider (https://qa-tms.bizihub.vn/vendor.js:91488:3)
+    at PersistGate (https://qa-tms.bizihub.vn/vendor.js:37752:5)
+    at Provider (https://qa-tms.bizihub.vn/vendor.js:39028:3)
+    at ErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:244334:5)
+    at AppErrorBoundary (https://qa-tms.bizihub.vn/main.js:392202:3)
+    at AppProviders (https://qa-tms.bizihub.vn/main.js:8351:33)", source: https://qa-tms.bizihub.vn/vendor.js (263977)
+[11240:6292:0116/142638.980:INFO:CONSOLE:365855] "mergedData ", source: https://qa-tms.bizihub.vn/main.js (365855)
+[11240:6292:0116/142639.061:INFO:CONSOLE:365855] "mergedData ", source: https://qa-tms.bizihub.vn/main.js (365855)
+[11240:6292:0116/142639.073:INFO:CONSOLE:365855] "mergedData ", source: https://qa-tms.bizihub.vn/main.js (365855)
+[11240:6292:0116/142639.265:INFO:CONSOLE:365855] "mergedData ", source: https://qa-tms.bizihub.vn/main.js (365855)
+[11240:6292:0116/142639.274:INFO:CONSOLE:365855] "mergedData ", source: https://qa-tms.bizihub.vn/main.js (365855)
+[11240:6292:0116/142639.929:INFO:CONSOLE:365855] "mergedData ", source: https://qa-tms.bizihub.vn/main.js (365855)
+[11240:6292:0116/142639.940:INFO:CONSOLE:44428] "Warning: Each child in a list should have a unique "key" prop.%s%s See https://reactjs.org/link/warning-keys for more information.%s 
+
+Check the render method of `Body`.  
+    at ImmutableComponent (https://qa-tms.bizihub.vn/vendor.js:14776:7)
+    at Body (https://qa-tms.bizihub.vn/vendor.js:15686:5)
+    at ImmutableComponent (https://qa-tms.bizihub.vn/vendor.js:14776:7)
+    at table
+    at div
+    at div
+    at div
+    at DomWrapper (https://qa-tms.bizihub.vn/vendor.js:88660:34)
+    at SingleObserver (https://qa-tms.bizihub.vn/vendor.js:88682:24)
+    at es_ResizeObserver (https://qa-tms.bizihub.vn/vendor.js:88798:24)
+    at Provider (https://qa-tms.bizihub.vn/vendor.js:14626:22)
+    at Table (https://qa-tms.bizihub.vn/vendor.js:17120:28)
+    at ImmutableComponent (https://qa-tms.bizihub.vn/vendor.js:14742:34)
+    at div
+    at div
+    at Spin (https://qa-tms.bizihub.vn/vendor.js:20479:22)
+    at SpinFC (https://qa-tms.bizihub.vn/vendor.js:20549:16)
+    at div
+    at InternalTable (https://qa-tms.bizihub.vn/vendor.js:30191:16)
+    at Table_Table (https://qa-tms.bizihub.vn/vendor.js:30544:32)
+    at TableContent (https://qa-tms.bizihub.vn/main.js:365063:3)
+    at div
+    at div
+    at HotelList (https://qa-tms.bizihub.vn/main.js:366138:40)
+    at div
+    at HotelManagementPage (https://qa-tms.bizihub.vn/src_app_pages_HotelManagement_HotelManagementPage_tsx.js:23:82)
+    at Suspense
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at Outlet (https://qa-tms.bizihub.vn/vendor.js:40365:26)
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at Outlet (https://qa-tms.bizihub.vn/vendor.js:40365:26)
+    at main
+    at https://qa-tms.bizihub.vn/vendor.js:90736:18
+    at Content
+    at div
+    at https://qa-tms.bizihub.vn/vendor.js:90756:13
+    at Layout
+    at div
+    at https://qa-tms.bizihub.vn/vendor.js:90756:13
+    at Layout
+    at DashboardLayout (https://qa-tms.bizihub.vn/main.js:9382:36)
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at RenderErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:39806:5)
+    at Outlet (https://qa-tms.bizihub.vn/vendor.js:40365:26)
+    at AppLogicProvider (https://qa-tms.bizihub.vn/main.js:314887:3)
+    at RootLayout (https://qa-tms.bizihub.vn/main.js:9621:21)
+    at RenderedRoute (https://qa-tms.bizihub.vn/vendor.js:39865:5)
+    at RenderErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:39806:5)
+    at DataRoutes (https://qa-tms.bizihub.vn/vendor.js:40277:5)
+    at Router (https://qa-tms.bizihub.vn/vendor.js:40388:15)
+    at RouterProvider (https://qa-tms.bizihub.vn/vendor.js:40224:5)
+    at div
+    at App (https://qa-tms.bizihub.vn/main.js:10315:36)
+    at PartnershipApiProvider (https://qa-tms.bizihub.vn/main.js:8459:3)
+    at MotionWrapper (https://qa-tms.bizihub.vn/vendor.js:37289:5)
+    at ProviderChildren (https://qa-tms.bizihub.vn/vendor.js:37405:5)
+    at ConfigProvider (https://qa-tms.bizihub.vn/vendor.js:37653:25)
+    at I18nextProvider (https://qa-tms.bizihub.vn/vendor.js:34282:5)
+    at TranslationProvider (https://qa-tms.bizihub.vn/main.js:315951:3)
+    at QueryClientProvider (https://qa-tms.bizihub.vn/vendor.js:91488:3)
+    at PersistGate (https://qa-tms.bizihub.vn/vendor.js:37752:5)
+    at Provider (https://qa-tms.bizihub.vn/vendor.js:39028:3)
+    at ErrorBoundary (https://qa-tms.bizihub.vn/vendor.js:244334:5)
+    at AppErrorBoundary (https://qa-tms.bizihub.vn/main.js:392202:3)
+    at AppProviders (https://qa-tms.bizihub.vn/main.js:8351:33)", source: https://qa-tms.bizihub.vn/vendor.js (44428)
+[11240:6292:0116/142640.026:INFO:CONSOLE:365855] "mergedData ", source: https://qa-tms.bizihub.vn/main.js (365855)
+[16372:12044:0116/142644.334:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:180] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:236 to client_task_runner_.
+[16372:12044:0116/142644.334:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:180] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:236 to client_task_runner_.

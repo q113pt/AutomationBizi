@@ -1,0 +1,13 @@
+2026/01/16-14:25:13.299 2cd8 Reusing MANIFEST c:\Users\BZT0588\OneDrive\Tài liệu\automation-test\User_Data\Default\Local Storage\leveldb/MANIFEST-000001
+2026/01/16-14:25:13.308 2cd8 Recovering log #11
+2026/01/16-14:25:13.310 2cd8 Level-0 table #14: started
+2026/01/16-14:25:13.350 2cd8 Level-0 table #14: 154012 bytes OK
+2026/01/16-14:25:13.411 2cd8 Delete type=0 #11
+2026/01/16-14:25:13.413 2ab4 Compacting 4@0 + 0@1 files
+2026/01/16-14:25:13.488 2ab4 Generated table #16@0: 10 keys, 153250 bytes
+2026/01/16-14:25:13.488 2ab4 Compacted 4@0 + 0@1 files => 153250 bytes
+2026/01/16-14:25:13.500 2ab4 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/01/16-14:25:13.501 2ab4 Delete type=2 #7
+2026/01/16-14:25:13.501 2ab4 Delete type=2 #9
+2026/01/16-14:25:13.501 2ab4 Delete type=2 #12
+2026/01/16-14:25:13.512 2ab4 Delete type=2 #14

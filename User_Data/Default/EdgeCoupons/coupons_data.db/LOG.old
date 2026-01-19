@@ -1,0 +1,15 @@
+2026/01/16-14:25:17.606 3b60 Reusing MANIFEST c:\Users\BZT0588\OneDrive\Tài liệu\automation-test\User_Data\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/01/16-14:25:17.610 3b60 Recovering log #16
+2026/01/16-14:25:17.611 3b60 Reusing old log c:\Users\BZT0588\OneDrive\Tài liệu\automation-test\User_Data\Default\EdgeCoupons/coupons_data.db/000016.log 
+2026/01/16-14:25:17.960 48c0 Level-0 table #20: started
+2026/01/16-14:25:18.018 48c0 Level-0 table #20: 681440 bytes OK
+2026/01/16-14:25:18.050 48c0 Delete type=0 #16
+2026/01/16-14:25:18.050 48c0 Compacting 4@0 + 1@1 files
+2026/01/16-14:25:18.094 48c0 Generated table #21@0: 4 keys, 681347 bytes
+2026/01/16-14:25:18.094 48c0 Compacted 4@0 + 1@1 files => 681347 bytes
+2026/01/16-14:25:18.125 48c0 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/01/16-14:25:18.128 48c0 Delete type=2 #8
+2026/01/16-14:25:18.128 48c0 Delete type=2 #11
+2026/01/16-14:25:18.129 48c0 Delete type=2 #14
+2026/01/16-14:25:18.129 48c0 Delete type=2 #17
+2026/01/16-14:25:18.129 48c0 Delete type=2 #20
