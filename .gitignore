@@ -1,0 +1,34 @@
+# --- Python & System Cache (Rất quan trọng để ignore) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+Thumbs.db
+
+# --- Pytest Cache & Coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Project Specific (Dựa trên ảnh bạn gửi) ---
+# Folder báo cáo kết quả test, không nên push lên git
+reports/
+# Folder chứa driver (nếu là file .exe nặng thì không nên push)
+drivers/*.exe
+# Dữ liệu người dùng tạm thời
+User_Data/
+
+# --- Virtual Environment (Môi trường ảo) ---
+venv/
+env/
+.venv/
+.env
+
+# --- Logs ---
+*.log
+*.log.*
+
+# --- IDE Settings (Cấu hình Editor của từng người) ---
+.idea/
+.vscode/
+*.swp
