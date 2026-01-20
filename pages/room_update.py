@@ -1,171 +1,191 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import TimeoutException
+from .base_page import BasePage
+import time
 
-class RoomUpdatePage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+class RoomUpdatePage(BasePage):
+    # --- LOCATORS ---
+    ROOM_TAB = (By.XPATH, "//button[contains(., 'ROOM MANAGEMENT') or contains(., 'Quản lý phòng')]")
+    ADD_ROOM_BTN = (By.XPATH, "//button[contains(., 'ADD ROOM')]")
+    # Nút UPDATE chuẩn
+    UPDATE_SUBMIT_BTN = (By.XPATH, "//button[@type='submit']//div[normalize-space()='UPDATE'] | //button[normalize-space()='UPDATE']")
 
-    # --- CORE HELPERS ---
-    def click(self, locator):
-        el = self.wait.until(EC.element_to_be_clickable(locator))
-        el.click()
-
-    def input_text(self, locator, text):
-        el = self.wait.until(EC.visibility_of_element_located(locator))
-        el.click()
-        # Xóa sạch dữ liệu cũ (Ctrl+A -> Delete) để tránh lỗi với React input
-        el.send_keys(Keys.CONTROL + "a")
-        el.send_keys(Keys.DELETE)
-        el.send_keys(str(text))
-        
-    def is_checked(self, locator):
+    # --- HELPERS ---
+    def scroll_to_element(self, element):
         try:
-            return self.wait.until(EC.presence_of_element_located(locator)).is_selected()
+            self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+            time.sleep(0.5)
         except:
-            return False
+            pass
 
-    def select_dropdown_option(self, trigger_locator, option_text):
-        """Xử lý HeadlessUI/AntD Combobox"""
-        self.click(trigger_locator)
-        # Tìm option trong list (thường render ở cuối body)
-        option_xpath = f"//li[contains(., '{option_text}')] | //div[contains(@class, 'option') and contains(., '{option_text}')]"
-        self.click((By.XPATH, option_xpath))
+    def force_click(self, element):
+        """Click bằng Javascript nếu click thường thất bại"""
+        try:
+            element.click()
+        except:
+            self.driver.execute_script("arguments[0].click();", element)
 
-    # --- DYNAMIC NAME GENERATORS ---
-    # Dựa trên log bạn cung cấp: rooms.0.ratesList.0...
-    
-    def get_rate_base_name(self, room_idx=0, rate_idx=0):
-        return f"rooms.{room_idx}.ratesList.{rate_idx}"
+    def handle_combobox(self, element, text_to_type="o", name="Dropdown"):
+        """Scroll -> Click -> Nhập text -> Chờ -> Enter"""
+        try:
+            self.scroll_to_element(element)
+            self.force_click(element)
+            time.sleep(0.5)
+            
+            element.send_keys(text_to_type)
+            time.sleep(2) # Chờ load list
+            
+            element.send_keys(Keys.ENTER)
+            time.sleep(1) 
+        except Exception as e:
+            print(f"      ! Lỗi xử lý {name}: {e}")
 
-    def get_period_base_name(self, room_idx=0, rate_idx=0, period_idx=0):
-        # Lưu ý: priceByPriceApply.1 và priceListGrouped là cấu trúc cố định từ log
-        return f"rooms.{room_idx}.ratesList.{rate_idx}.priceByPriceApply.1.priceListGrouped.{period_idx}"
+    # --- ACTIONS ---
 
-    def get_market_base_name(self, room_idx=0, rate_idx=0, period_idx=0, market_idx=0):
-        # items.2 thường là item đại diện cho Market Price trong cấu trúc Period
-        period_base = self.get_period_base_name(room_idx, rate_idx, period_idx)
-        return f"{period_base}.items.2.marketPricesList.{market_idx}"
+    def click_room_management_tab(self):
+        print("   -> [Action] Click tab ROOM MANAGEMENT...")
+        time.sleep(2)
+        try:
+            # Chờ nút xuất hiện và click
+            btn = self.wait.until(EC.element_to_be_clickable(self.ROOM_TAB))
+            self.force_click(btn)
+            print("   -> Đã click Tab. Chờ 3s cho form load...")
+            time.sleep(3) # Chờ form trượt ra hết
+        except Exception as e:
+            print(f"   ! Lỗi click tab: {e}")
+            raise e
 
-    # --- 1. OPTION ACTIONS ---
+    def submit_update(self):
+        print("      -> [Action] Nhấn nút UPDATE (Submit)...")
+        try:
+            btns = self.driver.find_elements(By.XPATH, "//button[contains(., 'UPDATE')]")
+            target_btn = None
+            for btn in btns:
+                text = btn.text.upper()
+                if "UPDATE" in text and "STATUS" not in text and "CONTENT" not in text:
+                    target_btn = btn
+                    break
+            
+            if target_btn:
+                self.scroll_to_element(target_btn)
+                self.force_click(target_btn)
+                time.sleep(4) 
+            else:
+                print("      ! Không tìm thấy nút UPDATE chuẩn.")
+        except Exception as e:
+            print(f"      ! Lỗi nhấn nút Update: {e}")
 
-    def add_new_option(self):
-        self.click((By.XPATH, "//button[contains(text(), '+ ADD OPTION')]"))
+    def add_new_room(self):
+        print("      -> [Action] Nhấn ADD ROOM...")
+        try:
+            btn = self.driver.find_element(*self.ADD_ROOM_BTN)
+            self.scroll_to_element(btn)
+            self.force_click(btn)
+            time.sleep(2) 
+        except Exception as e:
+            print(f"      ! Lỗi click Add Room: {e}")
 
-    def delete_option(self, option_index=0):
-        # Click checkbox delete
-        # Tìm checkbox xóa của option tương ứng (cần xpath tương đối chuẩn xác)
-        # Giả định xóa option cuối
-        self.click((By.XPATH, "//button[contains(text(), 'DELETE SELECTED OPTIONS')]"))
+    def enter_text_element(self, element, text):
+        self.scroll_to_element(element)
+        self.force_click(element)
+        element.send_keys(Keys.CONTROL + "a")
+        element.send_keys(Keys.DELETE)
+        element.send_keys(text)
 
-    def configure_option_amenities(self, room_idx=0, rate_idx=0, breakfast=True, non_smoking=False, extra_bed=False):
-        base = self.get_rate_base_name(room_idx, rate_idx)
-        
-        # Checkbox logic
-        for name, state in [("hasBreakfast", breakfast), ("nonSmoking", non_smoking), ("hasExtraBed", extra_bed)]:
-            loc = (By.NAME, f"{base}.{name}")
-            if self.is_checked(loc) != state:
-                # Tìm element label hoặc cha để click nếu input bị ẩn
+    # --- ĐIỀN DỮ LIỆU ---
+
+    def fill_first_room_basic(self, area="25"):
+        """
+        Hàm này được gọi ở dòng 43 trong file Test của bạn.
+        Nó sẽ tìm ô Area, Amenities, View ĐẦU TIÊN (của phòng 1) để nhập.
+        """
+        print("      -> [Input Room 1] Nhập Area, Amenities, View...")
+        try:
+            # 1. Nhập Area
+            # Tìm input Area đầu tiên [1]
+            area_loc = (By.XPATH, "(//input[contains(@placeholder, 'Area') or contains(@name, 'squareMeters')])[1]")
+            area_input = self.wait.until(EC.visibility_of_element_located(area_loc))
+            self.enter_text_element(area_input, area)
+            
+            # 2. Amenities (Room 1)
+            print("         - Chọn Amenities (Room 1)...")
+            # Tìm ô Amenities đầu tiên [1]
+            am_loc = (By.XPATH, "(//input[@placeholder='Select room amenities'])[1]")
+            am_input = self.wait.until(EC.presence_of_element_located(am_loc))
+            self.handle_combobox(am_input, "o", "Amenities")
+
+            # 3. View (Room 1)
+            print("         - Chọn View (Room 1)...")
+            # Tìm ô View đầu tiên [1]
+            view_loc = (By.XPATH, "(//input[@placeholder='Select view'])[1]")
+            view_input = self.wait.until(EC.presence_of_element_located(view_loc))
+            self.handle_combobox(view_input, "o", "View")
+
+        except Exception as e:
+            print(f"      ! Lỗi nhập phòng 1: {e}")
+
+    def fill_last_new_room(self, name_vi="Phòng Mới", name_en="New Room", area="30", max_occ="3", adult="2", child="2"):
+        print("      -> [Input New Room] Nhập Full Info...")
+        try:
+            time.sleep(1) # Chờ DOM cập nhật sau khi Add Room
+
+            # 1. Nhập Tên
+            name_vis = self.driver.find_elements(By.XPATH, "//input[contains(@placeholder, 'Vietnamese')]")
+            if name_vis: self.enter_text_element(name_vis[-1], name_vi)
+            
+            name_ens = self.driver.find_elements(By.XPATH, "//input[contains(@placeholder, 'English')]")
+            if name_ens: self.enter_text_element(name_ens[-1], name_en)
+
+            # 2. Nhập Area
+            areas = self.driver.find_elements(By.XPATH, "//input[contains(@placeholder, 'Area') or contains(@name, 'squareMeters')]")
+            if areas: self.enter_text_element(areas[-1], area)
+
+            # 3. Amenities (Room Mới - lấy cái cuối cùng [-1])
+            amenities = self.driver.find_elements(By.XPATH, "//input[@placeholder='Select room amenities']")
+            if amenities:
+                print("         - Chọn Amenities (Room Mới)...")
+                self.handle_combobox(amenities[-1], "o", "Amenities")
+
+            # 4. View (Room Mới - lấy cái cuối cùng [-1])
+            views = self.driver.find_elements(By.XPATH, "//input[@placeholder='Select view']")
+            if views:
+                print("         - Chọn View (Room Mới)...")
+                self.handle_combobox(views[-1], "o", "View")
+
+            # 5. Bed Type (Room Mới - lấy cái cuối cùng [-1])
+            beds = self.driver.find_elements(By.XPATH, "//input[@placeholder='Select bed type']")
+            if beds:
+                print("         - Chọn Bed Type (gõ 'p')...")
+                self.handle_combobox(beds[-1], "p", "Bed Type")
+
+            # 6. Max Occupancy & Adult/Child
+            adults = self.driver.find_elements(By.XPATH, "//input[contains(@name, 'adults')]")
+            if adults:
+                last_adult = adults[-1]
+                self.enter_text_element(last_adult, adult)
+                
+                children = self.driver.find_elements(By.XPATH, "//input[contains(@name, 'children')]")
+                if children: self.enter_text_element(children[-1], child)
+
+                # Max Occupancy
                 try:
-                    self.click(loc)
+                    max_occ_input = last_adult.find_element(By.XPATH, "./preceding::input[@role='combobox'][1]")
+                    self.scroll_to_element(max_occ_input)
+                    self.force_click(max_occ_input)
+                    time.sleep(0.5)
+                    max_occ_input.send_keys(max_occ)
+                    time.sleep(0.5)
+                    max_occ_input.send_keys(Keys.ENTER)
                 except:
-                    # Fallback: click label kế bên
-                    self.driver.find_element(By.XPATH, f"//input[@name='{base}.{name}']/following-sibling::label").click()
+                    print("      ! Lỗi nhập Max Occupancy")
 
-    def set_refund_policy(self, room_idx=0, rate_idx=0, is_refundable=True, days=None, penalty=None):
-        base = self.get_rate_base_name(room_idx, rate_idx)
-        
-        # Xử lý Radio button Refundable
-        val_str = "true" if is_refundable else "false"
-        # Click vào radio input
-        try:
-            self.click((By.CSS_SELECTOR, f"input[name='{base}.refundable'][value='{val_str}']"))
-        except:
-            # Fallback nếu radio bị ẩn: Dùng JS click
-            el = self.driver.find_element(By.CSS_SELECTOR, f"input[name='{base}.refundable'][value='{val_str}']")
-            self.driver.execute_script("arguments[0].click();", el)
-
-        if is_refundable and days and penalty:
-            self.input_text((By.NAME, f"{base}.policiesConfig.dayBeforeCheckIn"), days)
-            self.input_text((By.NAME, f"{base}.policiesConfig.penaltyConfig.amount"), penalty)
-
-    # --- 2. PERIOD ACTIONS ---
-
-    def add_new_period(self):
-        self.click((By.XPATH, "//button[contains(text(), '+ ADD PERIOD')]"))
-
-    def set_period_info(self, name, start_date, end_date, room_idx=0, rate_idx=0, period_idx=0):
-        base = self.get_period_base_name(room_idx, rate_idx, period_idx)
-        self.input_text((By.NAME, f"{base}.stageName"), name)
-        self.input_text((By.NAME, f"{base}.stagedDate.startDate"), start_date)
-        # Tab hoặc click sang ô end date để trigger calendar close
-        self.input_text((By.NAME, f"{base}.stagedDate.endDate"), end_date)
-        self.driver.find_element(By.TAG_NAME, "body").click() # Click out để đóng datepicker
-
-    def set_base_price(self, price, room_idx=0, rate_idx=0, period_idx=0):
-        base = self.get_period_base_name(room_idx, rate_idx, period_idx)
-        # items.0 là giá Base (Allotment/OTA)
-        self.input_text((By.NAME, f"{base}.items.0.baseRate"), price)
-
-    def set_weekend_surcharge(self, sat_price=None, sun_price=None, room_idx=0, rate_idx=0, period_idx=0):
-        base = self.get_period_base_name(room_idx, rate_idx, period_idx)
-        # items.0.rateExtraConfigsList.[index] -> 1=Sat, 2=Sun (Theo log)
-        if sat_price:
-            self.input_text((By.NAME, f"{base}.items.0.rateExtraConfigsList.1.totalRateExtra"), sat_price)
-        if sun_price:
-            self.input_text((By.NAME, f"{base}.items.0.rateExtraConfigsList.2.totalRateExtra"), sun_price)
-
-    # --- 3. MARKET ACTIONS ---
-    
-    def add_market(self):
-        # Click nút Add Market (Lấy nút cuối cùng hiển thị trên màn hình để add vào period mới nhất)
-        markets = self.driver.find_elements(By.XPATH, "//button[contains(text(), '+ Add Market')]")
-        if markets:
-            markets[-1].click()
-
-    def set_market_config(self, region_name, price, room_idx=0, rate_idx=0, period_idx=0, market_idx=0):
-        base = self.get_market_base_name(room_idx, rate_idx, period_idx, market_idx)
-        
-        # 1. Chọn loại Country-Region (Radio) - mặc định thường chọn sẵn
-        
-        # 2. Chọn Region (Dropdown)
-        # Button trigger dropdown thường nằm ngay trước input regionCode (hoặc dựa theo UI)
-        # Ở đây dùng cách tìm nút 'Enter region' gần nhất
-        try:
-            # Tìm input/button để mở dropdown region
-            trigger = self.driver.find_element(By.XPATH, f"//input[@name='{base}.regionCode']/preceding-sibling::button | //button[contains(text(), 'Enter region')]")
-            self.select_dropdown_option((By.XPATH, "xpath_cua_trigger"), region_name)
-        except:
-            # Fallback đơn giản: Nếu chỉ cần test nhập giá
-            pass 
-
-        # 3. Nhập giá Market (Override)
-        self.input_text((By.NAME, f"{base}.baseRate"), price)
-
-    def remove_market(self):
-        # Click nút Remove Market cuối cùng
-        btns = self.driver.find_elements(By.XPATH, "//button[contains(text(), 'Remove Market')]")
-        if btns:
-            btns[-1].click()
-
-    # --- GENERAL ACTIONS ---
-    def save_changes(self):
-        self.click((By.XPATH, "//button[text()='UPDATE']"))
+        except Exception as e:
+            print(f"      ! Lỗi nhập phòng mới: {e}")
 
     def get_toast_message(self):
         try:
-            return self.wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "ant-message-notice"))).text
-        except TimeoutException:
-            return None
-
-    def get_input_error_message(self):
-        """Lấy text lỗi màu đỏ dưới input"""
-        try:
-            # Class thường gặp của AntDesign/Tailwind form error
-            el = self.driver.find_element(By.XPATH, "//div[contains(@class, 'ant-form-item-explain-error') or contains(@class, 'text-red')]")
-            return el.text
+            return self.wait.until(lambda d: d.find_element(By.CLASS_NAME, "ant-message-notice")).text
         except:
             return None

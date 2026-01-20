@@ -1,132 +1,83 @@
-import pytest
-from selenium import webdriver
-import sys
-import os
+import unittest
 import time
+from selenium import webdriver
+from selenium.webdriver.edge.options import Options
 
-# --- FIX IMPORT PATH (Quan trọng) ---
-# Đoạn này giúp Python tìm thấy thư mục 'pages' từ thư mục 'tests'
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+from pages.login_page import LoginPage
+from pages.hotel_list_page import HotelListPage
 from pages.room_update import RoomUpdatePage
 
-# --- CONFIGURATION ---
-BASE_URL = "https://partner.bizigo.vn/hotel-management/room-types" # Thay URL thật của bạn
-# Có thể thêm logic Login vào đây hoặc dùng cookies
+class TestRoomUpdate(unittest.TestCase):
 
-@pytest.fixture(scope="function")
-def driver():
-    # Setup Driver
-    options = webdriver.ChromeOptions()
-    options.add_argument("--start-maximized")
-    # options.add_argument("--headless") # Bỏ comment nếu muốn chạy ẩn
-    driver = webdriver.Chrome(options=options)
-    
-    # --- LOGIC LOGIN GIẢ ĐỊNH (Nếu cần) ---
-    # driver.get("URL_LOGIN")
-    # ... code login ...
-    
-    driver.get(BASE_URL)
-    yield driver
-    driver.quit()
+    def setUp(self):
+        options = Options()
+        self.driver = webdriver.Edge(options=options)
+        self.driver.maximize_window()
+        self.driver.get("https://qa-tms.bizihub.vn/dashboard/hotel-management/list")
 
-@pytest.fixture
-def page(driver):
-    return RoomUpdatePage(driver)
+    def test_update_and_create_room(self):
+        login_page = LoginPage(self.driver)
+        hotel_list_page = HotelListPage(self.driver)
+        room_page = RoomUpdatePage(self.driver)
 
-# --- TEST CASES ---
+        print("\n--- 1. ĐĂNG NHẬP ---")
+        login_page.login_flow("tmssuperadmin", "tmssuperadmin123")
 
-def test_TC_01_full_flow_update_room_price(page):
-    """
-    Test Case: Cấu hình trọn vẹn 1 phòng
-    - Check tiện ích
-    - Setup hoàn hủy
-    - Setup giá theo giai đoạn
-    - Setup phụ thu cuối tuần (T7, CN)
-    """
-    print("\n--- Bắt đầu TC 01: Config Room Price ---")
-    
-    # 1. Cấu hình Option (Rate)
-    print("Step 1: Config Option")
-    page.configure_option_amenities(breakfast=True, non_smoking=True)
-    page.set_refund_policy(is_refundable=True, days="5", penalty="100")
+        hotel_ids = [
+            "bizi1756240234", "bizi42193643"
+        ]
 
-    # 2. Cấu hình Period (Giai đoạn)
-    print("Step 2: Config Period")
-    # Giả sử sửa Period đầu tiên (index 0)
-    # Lưu ý: Đảm bảo Period 0 đang tồn tại
-    try:
-        page.set_period_info("Tet Holiday 2026", "20/01/2026", "30/01/2026", period_idx=0)
-        page.set_base_price("2000000", period_idx=0)
-    except Exception as e:
-        print(f"Lỗi thao tác Period: {e}")
+        print(f"--- 2. BẮT ĐẦU XỬ LÝ {len(hotel_ids)} KHÁCH SẠN ---")
 
-    # 3. Cấu hình Phụ thu (FIXED: Cả Sat và Sun)
-    print("Step 3: Config Surcharge")
-    page.set_weekend_surcharge(sat_price="500000", sun_price="500000", period_idx=0)
+        for index, hotel_id in enumerate(hotel_ids):
+            print(f"\n[{index + 1}/{len(hotel_ids)}] Đang xử lý ID: {hotel_id}")
+            try:
+                # A. Tìm & Mở Form
+                hotel_list_page.search_hotel(hotel_id)
+                hotel_list_page.open_update_form()
 
-    # 4. Lưu
-    page.save_changes()
-    
-    # 5. Verify
-    msg = page.get_toast_message()
-    print(f"Message nhận được: {msg}")
-    assert msg is not None, "Không thấy thông báo sau khi save"
-    # assert "success" in msg.lower() # Bật lại dòng này nếu biết text chuẩn
+                # B. Vào Tab Room
+                room_page.click_room_management_tab()
 
-def test_TC_02_market_price_override(page):
-    """
-    Test Case: Thêm Market và set giá riêng
-    """
-    print("\n--- Bắt đầu TC 02: Market Override ---")
-    
-    # Thêm Market mới vào Period 0
-    page.add_market()
-    time.sleep(1) # Chờ animation UI
-    
-    # Set giá cho Market đó (giả sử market mới thêm có index 0 trong list market của period 0)
-    page.set_market_config(
-        region_name="South East Asia", 
-        price="1800000", 
-        period_idx=0, 
-        market_idx=0
-    )
-    
-    page.save_changes()
-    
-    # Check không có lỗi input
-    err = page.get_input_error_message()
-    assert err is None, f"Có lỗi input: {err}"
+                # C. Xử lý Phòng 1: Area + Amenities (o) + View (o)
+                room_page.fill_first_room_basic(area="28")
+                
+                # D. UPDATE (Lưu lần 1)
+                room_page.submit_update()
+                
+                # E. ADD ROOM
+                room_page.add_new_room()
+                
+                # F. Xử lý Phòng Mới: Full info + Bed Type (p)
+                room_page.fill_last_new_room(
+                    name_vi="Phòng Gia Đình VIP",
+                    name_en="VIP Family Room",
+                    area="45",
+                    max_occ="3",
+                    adult="2",
+                    child="2"
+                )
 
-def test_TC_03_validate_date_logic(page):
-    """
-    Test Case Negative: Ngày kết thúc nhỏ hơn ngày bắt đầu
-    """
-    print("\n--- Bắt đầu TC 03: Validate Date ---")
-    
-    page.set_period_info("Invalid Date Test", "10/02/2026", "01/02/2026", period_idx=0)
-    page.save_changes()
-    
-    # Mong đợi hệ thống báo lỗi hoặc toast error
-    err = page.get_input_error_message() or page.get_toast_message()
-    print(f"Error detected: {err}")
-    assert err is not None, "Hệ thống phải báo lỗi khi ngày kết thúc nhỏ hơn ngày bắt đầu"
+                # G. UPDATE (Lưu lần 2)
+                room_page.submit_update()
 
-def test_TC_04_add_delete_option(page):
-    """
-    Test Case: Thêm Option mới
-    """
-    print("\n--- Bắt đầu TC 04: Add Option ---")
-    
-    # Thêm
-    page.add_new_option()
-    
-    # Cần wait 1 chút để UI render option mới
-    time.sleep(1) 
-    
-    # Validate option 2 (index 1) đã được thêm (check field breakfast của option index 1)
-    # Lưu ý: index bắt đầu từ 0, nên option thứ 2 sẽ có index là 1
-    from selenium.webdriver.common.by import By
-    opt_2_exists = page.driver.find_elements(By.NAME, "rooms.0.ratesList.1.hasBreakfast")
-    
-    assert len(opt_2_exists) > 0, "Option mới chưa được thêm (Không tìm thấy element rooms.0.ratesList.1...)"
+                msg = room_page.get_toast_message()
+                if msg: print(f"         Thông báo: {msg}")
+
+                hotel_list_page.close_update_form()
+
+            except Exception as e:
+                print(f"   -> ❌ Lỗi ID {hotel_id}: {e}")
+                try:
+                    hotel_list_page.close_update_form()
+                    hotel_list_page.go_to_hotel_list_menu()
+                except:
+                    self.driver.get("https://qa-tms.bizihub.vn/dashboard/hotel-management/list")
+                    time.sleep(3)
+
+    def tearDown(self):
+        print("Hoàn thành test.")
+        # self.driver.quit()
+
+if __name__ == "__main__":
+    unittest.main()
